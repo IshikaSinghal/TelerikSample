@@ -20,10 +20,34 @@
       </li>
       <li>
         <a
+          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
+          target="_blank"
+          rel="noopener"
+          >router</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
+          target="_blank"
+          rel="noopener"
+          >vuex</a
+        >
+      </li>
+      <li>
+        <a
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
           target="_blank"
           rel="noopener"
           >eslint</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript"
+          target="_blank"
+          rel="noopener"
+          >typescript</a
         >
       </li>
     </ul>
@@ -86,23 +110,21 @@
   </div>
 </template>
 
-<script>
-// import vue facing decorative component
-import { Vue, toNative, Component } from "vue-facing-decorator";
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
 
-@Component({
-  components: {
-    
+@Options({
+  props: {
+    msg: String,
   },
 })
-class HelloWorld extends Vue {
-  msg = "Welcome to Your Vue.js App";
+export default class HelloWorld extends Vue {
+  msg!: string;
 }
-export default toNative(HelloWorld);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="css">
 h3 {
   margin: 40px 0 0;
 }
