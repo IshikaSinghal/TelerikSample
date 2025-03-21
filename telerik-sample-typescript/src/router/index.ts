@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
@@ -15,6 +16,14 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/alertmodalpopup",
+    name: "alertmodalpopup",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/AlertModalPopup.vue"
+      ),
   },
 ];
 
