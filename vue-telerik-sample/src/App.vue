@@ -3,7 +3,8 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/alertmodalpopup">AlertModalPopup</router-link> |
-      <router-link to="/telerikParentComponent">TextEditor</router-link>
+      <router-link to="/telerikParentComponent">TextEditor</router-link> |
+      <router-link to="/DataGrid">DataGrid</router-link>
     </nav>
     <router-view /> <!-- This will render the routed components -->
   </div>
