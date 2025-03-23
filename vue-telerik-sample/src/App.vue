@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |  
-      <router-link to="/alertmodalpopup">AlertModalPopup</router-link>
+      <router-link to="/alertmodalpopup">AlertModalPopup</router-link> |
+      <router-link to="/telerikParentComponent">TextEditor</router-link>
     </nav>
     <router-view /> <!-- This will render the routed components -->
   </div>
