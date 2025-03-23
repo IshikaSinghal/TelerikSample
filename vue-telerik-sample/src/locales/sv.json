@@ -1,0 +1,32 @@
+{
+    "datepicker": {
+      "toggleCalendar": "Växla kalender"
+    },
+    "calendar": {
+      "today": "Idag"
+    },
+    "dateinput": {
+      "increment": "Öka värde",
+      "decrement": "Minska värde"
+    },
+    "datetimepicker": {
+      "date": "Datum",
+      "time": "Tid",
+      "cancel": "Avbryt",
+      "set": "Ställ in"
+    },
+    "timepicker": {
+      "set": "Ställ in",
+      "cancel": "Avbryt",
+      "now": "Nu",
+      "selectNow": "Välj nu",
+      "toggleTimeSelector": "Växla tidsväljare",
+      "toggleClock": "Växla klocka"
+    },
+    "daterangepicker": {
+      "swapStartEnd": "Byt start- och slutvärden",
+      "start": "Start",
+      "end": "Slut"
+    }
+  }
+  

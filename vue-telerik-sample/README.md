@@ -46,3 +46,16 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    - **Invitee**:  
      - Adding Description  
      - Configure Invitation Email
+
+# DatePicker / DateTimePicker Use Cases
+## Areas where the DatePicker  is used without limits (min/max date or min/max time):
+1. **Program**
+2. **Invitee** ( - Registration page builder > Event details)
+3. **License Details**( - Licenses, - Add-ons, - Premium features)
+
+## Areas where the DatePicker /  DateTimePicker  is used with limits (min/max date or min/max time):
+1. **Event Settings**
+2. **Event Webpages**
+3. **Watch Live**
+4. **Dialogues**( - Dialogue scheduling)
+5. **License Details**( - Consumption based products)

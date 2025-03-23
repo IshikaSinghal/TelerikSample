@@ -12,6 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
+    "resolveJsonModule": true, // This enables importing JSON files
     "baseUrl": ".",
     "types": [
       "webpack-env"
