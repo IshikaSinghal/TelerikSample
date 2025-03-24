@@ -9,7 +9,7 @@
                             :text-field="'locale'" @change="Change" />
                     </h6>
                 </div>
-                <div class="wrapper">
+                <div class="datepicker-container">
                     <date-picker v-if="dateOnly" v-model="bindedDate" class="date-picker" :format="GetDateFormat()"
                         :min="localmindatetime" :min-time="localMinTime" :max="localmaxdatetime"
                         :max-time="localMaxTime" :validityStyles="false" @change="SetDateTime" />
@@ -18,6 +18,10 @@
                         :max="localmaxdatetime" :max-time="localMaxTime" :validityStyles="false"
                         :icon="'custom-icon-class'" @change="SetDateTime" />
                     <teleport v-if="isMounted" to=".k-svg-i-calendar"><img :src="iconurl" /></teleport>
+                </div>
+                <div>
+                    <h2>Result:</h2>
+                    <p>{{ bindedDate }}</p>
                 </div>
             </div>
         </intl>
@@ -150,17 +154,7 @@ class Datepicker extends Vue {
 export default toNative(Datepicker);
 </script>
 <style>
-.k-date-icon {
-    background: url('@/assets/Calender.svg') no-repeat center center !important;
-    background-size: 16px 16px;
-    /* adjust the size */
-    width: 20px;
-    /* set the width */
-    height: 20px;
-    /* set the height */
-}
-
-.wrapper {
+.datepicker-container {
     width: 300px;
     margin-left: 20px;
 }

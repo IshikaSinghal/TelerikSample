@@ -3,7 +3,7 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/alertmodalpopup">AlertModalPopup</router-link> |
-      <router-link to="/telerikParentComponent">TextEditor</router-link> |
+      <router-link to="/textEditorParentComponent">TextEditor</router-link> |
       <router-link to="/DataGrid">DataGrid</router-link> |
       <router-link to="/datepicker">Datepicker</router-link>
 

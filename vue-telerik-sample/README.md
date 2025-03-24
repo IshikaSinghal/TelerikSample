@@ -47,6 +47,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
      - Adding Description  
      - Configure Invitation Email
 
+
 # DatePicker / DateTimePicker Use Cases
 ## Areas where the DatePicker  is used without limits (min/max date or min/max time):
 1. **Program**
@@ -59,3 +60,20 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 3. **Watch Live**
 4. **Dialogues**( - Dialogue scheduling)
 5. **License Details**( - Consumption based products)
+
+
+### Key Areas of Modal Popup Usage
+1. **Create New Information without saving previous one**
+2. **Create New Dialogue without saving previous one**
+3. **Create New program without saving previous one**
+4. **Copy dialogue item**
+5. **Publish Event Page**
+6. **Export Dialogue Responses**
+7. **Invitee**
+8. **Manage Access**
+9. **Participant**
+10. **Participant fields**
+11. **Participant Segments**
+12. **Gamification**
+13. **Event Listing**
+
