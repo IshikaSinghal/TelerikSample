@@ -73,7 +73,7 @@ class DataGrid extends Vue {
   private products = this.createRandomData(100);
   private gridData: { data: any[]; total: number } = { data: [], total: 0 }; // Ensure gridData is an object
   private skip = 0;
-  private take = 10;
+  private take = 100;
   private group = [];
   private expandedItems = [];
   private loader = false;
