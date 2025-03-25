@@ -190,19 +190,19 @@ export default toNative(Datepicker);
 }
 
 /* Buttons */
-.k-button-solid-base {
+.k-datetime-container .k-button-solid-base {
     background-color: #fff;
     border-color: #1E3A8A;
     color: #1E3A8A;
 }
 
-.k-button-solid-primary {
+.k-datetime-container .k-button-solid-primary {
     background-color: #1E3A8A;
     border-color: #193175;
     color: #fff;
 }
 
-.k-button-solid {
+.k-datetime-container .k-button-solid {
     height: 44px;
     border-radius: 22px;
 }
@@ -257,7 +257,7 @@ export default toNative(Datepicker);
     color: #1E3A8A;
 }
 
-.k-button-solid-primary:hover,
+.k-datetime-container .k-button-solid-primary:hover,
 .k-calendar-tr .k-selected .k-link:hover {
     background-color: #3C59AC;
     border-color: #3C59AC;

@@ -28,7 +28,6 @@
         @filterchange="filterChange"
         @headerselectionchange="onHeaderSelectionChange" 
         @rowclick="onRowClick"
-        @pagechange="pageChangeHandler"
       >
         <template v-slot:myTemplate="{ props }">
           <custom :data-item="props.dataItem" @edit="edit" @remove="remove" />
