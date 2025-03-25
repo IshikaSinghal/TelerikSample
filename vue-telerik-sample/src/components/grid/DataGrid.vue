@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <button @click="exportPDF">Download PDF</button>
-    <button @click="exportExcel">Download Excel</button>
+    <button @click="ExportExcel">Download Excel</button>
     <button @click="exportPDFWithComp">Export pdf via a component</button>
     <pdfexport ref="gridPdfExport" :margin="'1cm'">
       <Grid
@@ -56,6 +56,7 @@ import "@progress/kendo-theme-default/dist/all.css";
 import DialogContainer from "./DialogueContainer.vue";
 import CommandCell from "./CommandCell.vue";
 import { Button } from "@progress/kendo-vue-buttons";
+import { saveExcel } from '@progress/kendo-vue-excel-export';
 
 @Component({
   components: {
@@ -280,9 +281,25 @@ console.log(event);
     });
   }
 
-  private exportExcel() {
-    console.log("Exporting Excel");
-    // (this.$refs.excelExport as any).save(this.products);
+ 
+  private ExportExcel() {
+    const fullData = process(this.products, {
+      take: this.products.length,
+      skip: 0,
+      group: this.group,
+      sort: this.sort,
+    });
+    saveExcel({
+      data: fullData.data, // Data to export
+      fileName: "export.xlsx", // File name
+      columns: [
+        { field: 'ProductID' },
+        { field: 'ProductName', title: 'Product Name' },
+        { field: 'UnitPrice', title: 'Unit Price' },
+        { field: 'UnitsInStock', title: 'Units In Stock' },
+        { field: 'StockDate', title: 'Stock Date' },
+      ],
+    });
   }
 }
 

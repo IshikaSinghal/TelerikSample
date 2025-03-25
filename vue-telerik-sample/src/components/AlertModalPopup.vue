@@ -3,25 +3,23 @@
     <k-dialog
       v-if="visibleDialog"
       :title="alertData.title"
-      @close="handleCloseDialog"
+      @close="HandleCloseDialog"
     >
-      <div :style="{ textAlign: 'left' }">
-        <p  v-html="formattedDescription"></p>
-         <!-- Render input fields, labels, and checkboxes -->
+      <div class="dialog-content">
+        <p v-html="alertData.description"></p>
+        <!-- Render input fields, labels, and checkboxes -->
         <div v-for="(field, index) in alertData.fields" :key="index" class="field-container">
           <!-- Render text input -->
-          <label v-if="field.type === 'text'" class="label">{{ field.label }}</label> <br>
+          <label v-if="field.type === 'text'" class="input-label">{{ field.label }}</label> <br>
           <input
             v-if="field.type === 'text'"
             type="text"
             v-model="field.value"
             :placeholder="field.label"
-            class="input-box"
+            class="input-field"
           />
-
           <!-- Render label -->
-          <label v-if="field.type === 'label'" class="label section-label">{{ field.text }}</label>
-
+          <label v-if="field.type === 'label'" class="input-label section-label">{{ field.text }}</label>
           <!-- Render checkbox -->
           <label v-if="field.type === 'checkbox'" class="checkbox-label">
             <input
@@ -33,104 +31,72 @@
         </div>
       </div>
       <dialog-actions-bar>
-        <kbutton @click="handleCancel" class="btn btn-secondary">
+        <Button @click="HandleCancel" class="btn btn-secondary">
           {{ alertData.cancelButton }}
-        </kbutton> 
-        <kbutton @click="handleConfirm" class="btn btn-primary">
+        </Button>
+        <Button @click="HandleConfirm" class="btn btn-primary">
           {{ alertData.confirmButton }}
-        </kbutton>
+        </Button>
       </dialog-actions-bar>
     </k-dialog>
   </div>
 </template>
-
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from "vue-facing-decorator";
+import { Component, Vue, Prop } from "vue-facing-decorator";
 import { Dialog, DialogActionsBar } from "@progress/kendo-vue-dialogs";
 import { Button } from "@progress/kendo-vue-buttons";
-
+// Import the PopupViewModel and Field classes
+import PopupViewModel from "@/entities/PopupViewModel";
 @Component({
   components: {
     "k-dialog": Dialog,
     "dialog-actions-bar": DialogActionsBar,
-    kbutton: Button,
+    Button,
   },
 })
-export default class AlertModalPopup extends Vue {
-  @Prop({ required: true }) alertData!: {
-    title: string;
-    description: string;
-    confirmButton: string;
-    cancelButton: string;
-        fields: { type: string; label: string; value?: string; checked?: boolean }[];
-  };
+class AlertModalPopup extends Vue {
+  @Prop({ required: true }) alertData!: PopupViewModel; // Use PopupViewModel class here
   @Prop({ required: true }) visibleDialog!: boolean;
-
- get formattedDescription() {
-    if (this.alertData.title === "Import participants") {
-      // Split by <br> tags and filter out empty lines
-      const lines = this.alertData.description
-        .split(/<br\s*\/?>/i) // Split by <br> or <br />
-        .map((line) => line.trim()) // Trim whitespace
-        .filter((line) => line.length > 0); // Remove empty lines
-
-      // Wrap each line in a span with the dot
-      return lines.map((line) => `<span class="line">${line}</span>`).join("");
-    } else {
-      return this.alertData.description; // Return the description as-is for other dialogs
-    }
+  // Renaming methods to PascalCase convention
+  public HandleConfirm() {
+    this.$emit("confirm");
   }
-
-// Emit confirm event when the user clicks the "Confirm" button
-  @Emit("confirm")
-  handleConfirm() {
-    return "confirmed";
+  public HandleCancel() {
+    this.$emit("cancel");
   }
-
-  // Emit cancel event when the user clicks the "Cancel" button
-  @Emit("cancel")
-  handleCancel() {
-    return "canceled";
-  }
-
-  // Emit closeDialog event when the dialog is closed manually (X button or other ways)
-  @Emit("closeDialog")
-  handleCloseDialog() {
-    return;
+  public HandleCloseDialog() {
+    this.$emit("closeDialog");
   }
 }
+export default AlertModalPopup;
 </script>
-
 <style>
-.k-dialog{
+.k-dialog {
   width: 30%;
 }
 .k-dialog-title {
-  text-align: left !important;
+  text-align: left;
 }
-.k-dialog{
-    border-radius: 24px;
-    background: white;
-    border-radius: 24px;
+.k-dialog {
+  border-radius: 24px;
+  background: white;
 }
-.k-dialog-titlebar{
-    border-radius: 24px;
-    background: white;
-    border:unset;
+.k-dialog-titlebar {
+  border-radius: 24px;
+  background: white;
+  border: unset;
 }
-.k-dialog-actions{
-    border: unset;
-    background-image: unset;
-    /* width: 50%; */
-    display: flex;
-    justify-content: end;
-    float: right;
-    align-self: end;
+.k-dialog-actions {
+  border: unset;
+  background-image: unset;
+  width: 50%;
+  float: right;
+  align-self: end;
 }
-.k-window{
-    box-shadow: unset;
+.k-window {
+  box-shadow: unset;
 }
-.k-dialog-content{
+.k-dialog-content {
   border: 1px solid #D9D7D7;
   border-left: unset;
   border-right: unset;
@@ -151,12 +117,12 @@ export default class AlertModalPopup extends Vue {
 .btn-secondary {
   color: #1E3A8A;
   background-color: #fff;
-  border: 1px solid #1E3A8A !important;
+  border: 1px solid #1E3A8A ;
 }
 .btn-secondary:hover,
 .btn-secondary:focus {
   color: #3C59AC;
-  border-color: #3C59AC !important;
+  border-color: #3C59AC;
   background-color: #fff;
   text-decoration: none;
 }
@@ -164,45 +130,48 @@ export default class AlertModalPopup extends Vue {
   background-color: #fff;
 }
 .btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: normal;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    height: 44px;
-    font-weight: 600;
-    padding: 0px 22px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 22px;
-    max-width: 100px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  white-space: nowrap;
+  height: 44px;
+  font-weight: 600;
+  padding: 0px 22px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 22px;
 }
 .line {
-  display: block; /* Ensure each line is on a new line */
+  display: block;
 }
-
 .line::before {
-  content: "•"; /* Add the dot */
-  margin-right: 0.5em; /* Space between the dot and the text */
-  color: black; /* Dot color */
+  content: "•";
+  margin-right: 0.5em;
+  color: black;
 }
-.input-box{
-    height: 44px;
-    width: -webkit-fill-available;
-    border-radius: 10px;
-    border: 1px solid #DCDFE4;
-    background: #fff;
-    padding: 6px 12px;
-    font-size: 14px;
+.input-field{
+  height: 44px;
+  width: -webkit-fill-available;
+  border-radius: 10px;
+  border: 1px solid #DCDFE4;
+  background: #fff;
+  padding: 6px 12px;
+  font-size: 14px;
 }
-.label{
+.input-label {
   font-weight: 600;
-    color: #333333;
-    margin-top: 6px;
-    font-size: 14px;
+  color: #333333;
+  margin-top: 6px;
+  font-size: 14px;
+}
+.dialog-content {
+  text-align: left;
+}
+.dialog-content ul{
+  padding-left: 15px;
 }
 </style>
