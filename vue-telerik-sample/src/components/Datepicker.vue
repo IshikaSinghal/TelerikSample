@@ -1,8 +1,8 @@
 <template>
     <localization :language="selectedLocale.language">
         <intl :locale="selectedLocale.locale">
-            <div class="example-wrapper">
-                <div class="col-xs-12 col-md-12 example-config">
+            <div class="locale-wrapper">
+                <div class="col-xs-12 col-md-12">
                     <h6>
                         Locale:
                         <dropdownlist :style="{ width: '230px' }" :value="selectedLocale" :data-items="locales"
@@ -16,7 +16,7 @@
                     <DateTimePicker v-else v-model="bindedDate" class="date-picker" :disabled="disable"
                         :format="GetDateFormat()" :min="localmindatetime" :min-time="localMinTime"
                         :max="localmaxdatetime" :max-time="localMaxTime" :validityStyles="false"
-                        :icon="'custom-icon-class'" @change="SetDateTime" />
+                        :icon="'custom-icon-class'" @change="SetDateTime" @click="GetMinTime()" />
                     <teleport v-if="isMounted" to=".k-svg-i-calendar"><img :src="iconurl" /></teleport>
                 </div>
                 <div>
@@ -33,7 +33,6 @@ import { DatePicker, DateTimePicker, TimePicker } from '@progress/kendo-vue-date
 import moment from 'moment';
 import { IntlProvider, load, loadMessages, LocalizationProvider } from '@progress/kendo-vue-intl';
 import { DropDownList } from "@progress/kendo-vue-dropdowns";
-
 import likelySubtags from 'cldr-core/supplemental/likelySubtags.json';
 import currencyData from 'cldr-core/supplemental/currencyData.json';
 import weekData from 'cldr-core/supplemental/weekData.json';
@@ -89,6 +88,8 @@ class Datepicker extends Vue {
     private localMaxTime: undefined | Date = undefined;
     private bindedDate = new Date();
     private isMounted = false;
+    private selectedItem: null | Element = null;
+    private selectedDate = new Date();
     private locales = [
         {
             language: 'en-US',
@@ -109,8 +110,7 @@ class Datepicker extends Vue {
         this.selectedLocale = this.locales[0];
         if (this.mindatetime !== undefined && this.maxdatetime !== undefined) {
             this.localmindatetime = this.mindatetime;
-            this.localMinTime = this.mindatetime;
-            this.localMinTime.setMinutes(this.localMinTime.getMinutes());
+            this.localMinTime = this.SetMinTime(this.mindatetime);
             this.localmaxdatetime = this.maxdatetime;
         } else if (this.maxdatetime !== undefined) {
             this.localmaxdatetime = this.maxdatetime;
@@ -119,7 +119,7 @@ class Datepicker extends Vue {
             this.localmindatetime = this.mindatetime;
             this.localMinTime = this.mindatetime;
             if(this.localMinTime !== null && this.localMinTime !== undefined) {
-                this.localMinTime.setMinutes(this.localMinTime.getMinutes());
+                this.localMinTime = this.SetMinTime(this.mindatetime);
             }
         }
         this.UpdateDate(this.date);
@@ -133,7 +133,7 @@ class Datepicker extends Vue {
         if (this.dateOnly) {
             return 'MMM d, y';
         } else {
-            return this.fullDayTimeFormat ? 'MMM d, y, hh:mm' : 'MMM d, y, hh:mm a';
+            return this.fullDayTimeFormat ? 'MMM d, y, HH:mm' : 'MMM d, y, hh:mm a';
         }
     }
     // Function to set and return value to parent component
@@ -144,11 +144,51 @@ class Datepicker extends Vue {
             const selectedate = new Date(this.bindedDate);
             selectedate.setSeconds(0);
             this.$emit('selectedDate', moment(selectedate).format());
+            const timeZoneOffset = new Date().getTimezoneOffset(); // This is in minutes (e.g., UTC-5 = 300 minutes)
+            // Adjust the selected date to UTC by subtracting the local time zone offset
+            const utcDate = new Date(this.bindedDate.getTime() - timeZoneOffset * 60000);
+            console.log(utcDate);
+            // Set the UTC date to a variable to display
+            const utcStr = utcDate.toISOString(); // This is the UTC date as an ISO string
+            console.log(utcStr);
+        }
+    }
+    private SetMinTime(date = new Date()) {
+        // alert(date);
+        const today = new Date();
+        if (
+            today.getFullYear() >= date.getFullYear() &&
+            today.getMonth() >= date.getMonth() &&
+            today.getDate() >= date.getDate()
+        ) {
+            return today; // Set the minTime to the current time of today
+        } else {
+            return undefined; // Set minTime to undefined for any other date
         }
     }
     // Change drop down value
     private Change(e: any) {
         this.selectedLocale = e.target.value;
+    }
+    private GetMinTime() {
+        const calendarPopup = document.querySelector('.k-calendar');
+        if(calendarPopup !== null && calendarPopup !== undefined) {
+            calendarPopup.addEventListener('click', (event) => {
+                if (event !== null && event !== undefined && event.target !== null && event.target !== undefined) {
+                    const element = event.target as HTMLElement;
+                    if (element.classList.contains('k-link') && element.textContent !== null && element.textContent !== undefined) {
+                        console.log(element.textContent.trim());
+                        let calendarTitleElement = document.querySelector(".k-calendar-title .k-button-text");
+                        if (calendarTitleElement !== null && calendarTitleElement !== undefined && calendarTitleElement.textContent !== null && calendarTitleElement.textContent !== undefined) {
+                            let stringDate = element.textContent + " " + calendarTitleElement.textContent;
+                            console.log(new Date(stringDate));
+                            this.selectedDate = new Date(stringDate);
+                            this.localMinTime = this.SetMinTime(this.selectedDate);
+                        }
+                    }
+                }
+            }, true);
+        }
     }
 }
 export default toNative(Datepicker);

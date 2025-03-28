@@ -1,17 +1,18 @@
   <template>
     <div>
       <!-- Kendo Editor Component -->
-      <Editor
+       <div class="text-editor-container">
+        <Editor
         :resizable="isResizable"
         :readonly="isReadOnly"
         :tools="tools"
         :style="[editorStyle]"
         :default-content="description"
         @change="OnChange($event)"
-        :content-style="contentStyle"
         :class="{ 'readonly-editor': isReadOnly }"
         :extend-view="ExtendView"
       />
+       </div>
       <div class="result">
         <h2>Result:</h2>
         {{ localDescription }}
@@ -38,6 +39,7 @@
     
     private localDescription = '';
     private  isResizable = true;
+    private mobileViewWidth = 768;  
 
     // Toolbar configuration
     tools = [
@@ -49,26 +51,36 @@
 
     // Editor styling
     editorStyle = {
-      width: '100%',
-      resize: 'vertical',
-      minHeight: '198px',
       borderRadius: '10px',
-    };
-    contentStyle = {
-      height: '150px',
-      overflowY: 'auto',
+      resize: 'vertical',
+      minHeight: '200px', 
+      maxHeight: 'inherit',
     };
 
     // Lifecycle hook to initialize `localDescription` with the `description` prop
     mounted() {
       this.localDescription = this.description;
+      if(window.innerWidth < this.mobileViewWidth){
+        window.addEventListener('scroll', this.HandleScroll);
+      }
+    }
+    beforeDestroy() {
+      // Clean up event listener when component is destroyed
+      window.removeEventListener('scroll', this.HandleScroll);
     }
     // Method to handle editor content change
     private OnChange(data: { html: string }) {
       this.localDescription = data.html;
       this.$emit('change-value', this.localDescription); // Emit changes to the parent
     }
-  
+
+    
+    private HandleScroll() {
+      const toolbarPopup = document.querySelector('.k-toolbar-popup') as HTMLElement;
+      if (toolbarPopup) {
+        toolbarPopup.style.display = 'none'; 
+      }
+    }
     // Method to extend the editor view with custom plugins
     private ExtendView(event: { dom: HTMLElement; viewProps: { state: any } }) {
       const state = event.viewProps.state;
@@ -123,9 +135,20 @@
   .k-window-titlebar{
     background: none;
   }
-  @media (min-width: 419px) and (max-width: 569px) {
-    .k-toolbar-separator, .k-toolbar-overflow-button {
-      display: none;
-    }
+  .text-editor-container{
+    height:219px;
   }
+  .k-editor-content>.k-iframe{
+    height:100% !important;
+  }
+
+@media (max-width: 768px) {
+    .k-toolbar-popup {
+        position: fixed;  
+        top: 378px;         
+        left: 50%;        
+        transform: translateX(-50%); 
+        width: inherit;
+    }
+}
 </style>

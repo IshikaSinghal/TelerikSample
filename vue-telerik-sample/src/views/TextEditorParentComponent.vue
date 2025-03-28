@@ -22,7 +22,7 @@
   })
   class TextEditorParentComponent extends Vue {
     // Contains placeholder text with formatting
-    private description  = '\u003cp\u003eThis event is the premier gathering designed to empower [audience] from across [industry/region] to achieve extraordinary results. We curate an immersive experience that fosters collaboration, ignites innovation, and unlocks the full potential of your business.\u003cbr /\u003e\n- Explore the full agenda and speakers.\u003cbr /\u003e\n- Learn more about registration options and early-bird discounts.\u003cbr /\u003e\n\u003ci\u003eRegister today and join us at the event for an experience that will redefine your business potential.\u003c/i\u003e\u003c/p\u003e\n'; // Initial description with type annotation
+    private description  = '<p>This event is the premier gathering designed to empower [audience] from across [industry/region] to achieve extraordinary results. We curate an immersive experience that fosters collaboration, ignites innovation, and unlocks the full potential of your business.<br /> - Explore the full agenda and speakers.<br /> - Learn more about registration options and early-bird discounts.<br /> <i>Register today and join us at the event for an experience that will redefine your business potential.</i></p>'; // Initial description with type annotation
     private isReadOnly = false; 
   
     // Method to toggle read-only state

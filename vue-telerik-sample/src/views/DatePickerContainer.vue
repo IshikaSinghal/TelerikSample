@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Datepicker :date="new Date(1739323800000)" :fullDayTimeFormat="true" :dateOnly="false" :mindatetime="minDateTime" :maxdatetime="undefined"/>
+        <Datepicker :date="new Date(1739323800000)"  :fullDayTimeFormat="isFullDayTimeFormat" :dateOnly="false" :mindatetime="minDateTime" :maxdatetime="undefined"/>
     </div>
 </template>
 <script lang="ts">
@@ -16,6 +16,21 @@ class DatePickerContainer extends Vue {
     private maxDateTime = new Date(
       new Date().setDate(new Date().getDate() + 5),
     );
+    private isFullDayTimeFormat = false;
+    mounted() {
+        this.CheckTimeFormat();
+    }
+    private CheckTimeFormat() {
+    const date = new Date();
+    const dateString = date.toLocaleTimeString();
+    if (dateString.match(/am|pm/i) || date.toString().match(/am|pm/i) ) {
+      // 12 hour clock
+      this.isFullDayTimeFormat = false;
+    } else {
+      // 24 hour clock
+      this.isFullDayTimeFormat = true;
+    }
+  }
 }
 export default toNative(DatePickerContainer);
 </script>
