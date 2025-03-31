@@ -17,11 +17,13 @@
                         :format="GetDateFormat()" :min="localmindatetime" :min-time="localMinTime"
                         :max="localmaxdatetime" :max-time="localMaxTime" :validityStyles="false"
                         :icon="'custom-icon-class'" @change="SetDateTime" @click="GetMinTime()" />
-                    <teleport v-if="isMounted" to=".k-svg-i-calendar"><img :src="iconurl" /></teleport>
+                    <teleport v-if="isDatePicker1Mounted" to="#datepicker-1"><img :src="iconurl" /></teleport>
+                    <teleport v-if="isDatePicker2Mounted" to="#datepicker-2"><img :src="iconurl" /></teleport>
                 </div>
-                <div>
+                <div class="margin-bottom-100">
                     <h2>Result:</h2>
                     <p>{{ bindedDate }}</p>
+                    <p>{{ utcDate }}</p>
                 </div>
             </div>
         </intl>
@@ -87,9 +89,9 @@ class Datepicker extends Vue {
     private localMinTime: undefined | Date = undefined;
     private localMaxTime: undefined | Date = undefined;
     private bindedDate = new Date();
-    private isMounted = false;
     private selectedItem: null | Element = null;
     private selectedDate = new Date();
+    private utcDate = "";
     private locales = [
         {
             language: 'en-US',
@@ -105,6 +107,8 @@ class Datepicker extends Vue {
         },
     ];
     private selectedLocale = { language: 'en-US', locale: 'en' };
+    private isDatePicker1Mounted = false;
+    private isDatePicker2Mounted = false;
     // Hooks
     mounted() {
         this.selectedLocale = this.locales[0];
@@ -122,8 +126,17 @@ class Datepicker extends Vue {
                 this.localMinTime = this.SetMinTime(this.mindatetime);
             }
         }
+        const element1 = document.querySelector('.k-svg-i-calendar');
+        if (element1 && !element1.hasAttribute("id")) {
+            element1.id = 'datepicker-1';
+            this.isDatePicker1Mounted = true;
+        }
+        const element2 = document.querySelectorAll('.k-svg-i-calendar').item(1);
+        if (element2 && !element2.hasAttribute("id")) {
+            element2.id = 'datepicker-2';
+            this.isDatePicker2Mounted = true;
+        }
         this.UpdateDate(this.date);
-        this.isMounted = true;
     }
     private UpdateDate(date: Date) {
         this.bindedDate = date;
@@ -139,6 +152,8 @@ class Datepicker extends Vue {
     // Function to set and return value to parent component
     private SetDateTime() {
         if (this.bindedDate) {
+            this.bindedDate.setSeconds(0);
+            this.utcDate = this.bindedDate.toISOString();
             console.log(this.bindedDate);
             this.$emit('selectedUTCDate', this.bindedDate);
             const selectedate = new Date(this.bindedDate);
@@ -194,89 +209,78 @@ class Datepicker extends Vue {
 export default toNative(Datepicker);
 </script>
 <style>
+.margin-bottom-100 {
+    margin-bottom: 100px;
+}
 .datepicker-container {
     width: 300px;
     margin-left: 20px;
 }
-
 .k-datetimepicker,
 .k-datepicker,
 .k-timepicker {
     height: 44px;
     border-radius: 10px;
 }
-
 .k-dateinput {
     padding: 6px 12px;
 }
-
 .k-datetimepicker:hover,
 .k-datepicker:hover,
 .k-timepicker:hover {
     box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
 }
-
 .k-datetimepicker:focus,
 .k-dateinput:focus,
 .k-datepicker:focus,
 .k-timepicker:focus {
     border: 1px solid #1E3A8A;
 }
-
 .k-datetime-container {
     border-radius: 10px;
     box-shadow: 4px 4px 20px 0px #0000001A;
     margin-top: 10px;
 }
-
 /* Buttons */
-.k-datetime-container .k-button-solid-base {
+.k-button-solid-base {
     background-color: #fff;
     border-color: #1E3A8A;
     color: #1E3A8A;
 }
-
-.k-datetime-container .k-button-solid-primary {
+.k-button-solid-primary {
     background-color: #1E3A8A;
     border-color: #193175;
     color: #fff;
 }
-
-.k-datetime-container .k-button-solid {
+.k-button-solid {
     height: 44px;
     border-radius: 22px;
 }
-
 .k-button-group .k-selected {
     background-color: #1E3A8A;
     border-color: #193175;
     color: #fff;
 }
-
 /* Grouping buttons */
 .k-group-start {
     border-radius: 8px 0 0 8px;
     font-weight: 600;
 }
-
 .k-group-end {
     border-radius: 0 8px 8px 0;
     font-weight: 600;
 }
-
 /* Flat primary button and calendar today text */
 .k-button-flat-primary,
 .k-calendar .k-calendar-view .k-today,
 .k-time-now .k-button-text {
     color: #1E3A8A;
 }
-
 /* Selected date in the calendar */
 .k-calendar .k-calendar-td.k-selected .k-calendar-cell-inner,
 .k-calendar .k-calendar-td.k-selected .k-link {
     background-color: #1E3A8A;
 }
-
 /* Icon button customization */
 .k-icon-button {
     border-color: #DCDFE4;
@@ -285,30 +289,27 @@ export default toNative(Datepicker);
     width: 44px;
     background-color: #F2F2F2;
 }
-
 /* Remove today button */
 .k-calendar-nav-today,
 .k-time-now {
     display: none;
 }
-
 /* Hover effect for items */
 .k-time-container .k-item:hover {
     color: #1E3A8A;
 }
-
-.k-datetime-container .k-button-solid-primary:hover,
+.k-button-solid-primary:hover,
 .k-calendar-tr .k-selected .k-link:hover {
     background-color: #3C59AC;
     border-color: #3C59AC;
     color: #fff;
 }
-
-.custom-datepicker .k-select {
-    background-image: url('@/assets/Calender.svg') !important;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 16px 16px;
-    /* Adjust size as needed */
+.k-time-cancel, .k-time-accept {
+    height: 40px;
+    min-width: 90px;
+    flex: 0;
+}
+.k-datetime-footer {
+    justify-content: end;
 }
 </style>

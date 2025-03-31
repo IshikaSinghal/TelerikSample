@@ -10,7 +10,7 @@
         <!-- Render input fields, labels, and checkboxes -->
         <div v-for="(field, index) in alertData.fields" :key="index" class="field-container">
           <!-- Render text input -->
-          <label v-if="field.type === 'text'" class="input-label">{{ field.label }}</label> <br>
+          <label v-if="field.type === 'text'" class="input-label">{{ field.label }}</label>
           <input
             v-if="field.type === 'text'"
             type="text"
@@ -34,7 +34,7 @@
         <Button @click="HandleCancel" class="btn btn-secondary">
           {{ alertData.cancelButton }}
         </Button>
-        <Button @click="HandleConfirm" class="btn btn-primary">
+        <Button @click="HandleConfirm" class="btn btn-primary margin-left-5">
           {{ alertData.confirmButton }}
         </Button>
       </dialog-actions-bar>
@@ -76,6 +76,7 @@ export default AlertModalPopup;
 }
 .k-dialog-title {
   text-align: left;
+  padding: 0;
 }
 .k-dialog {
   border-radius: 24px;
@@ -85,13 +86,16 @@ export default AlertModalPopup;
   border-radius: 24px;
   background: white;
   border: unset;
+  padding: 30px;
 }
 .k-dialog-actions {
   border: unset;
   background-image: unset;
-  width: 50%;
+  /* width: 50%; */
   float: right;
   align-self: end;
+  padding: 30px;
+  justify-content: end;
 }
 .k-window {
   box-shadow: unset;
@@ -100,8 +104,8 @@ export default AlertModalPopup;
   border: 1px solid #D9D7D7;
   border-left: unset;
   border-right: unset;
-  padding-left: 0px;
-  margin: 0px 20px;
+  margin: 0 30px;
+  padding: 30px 0px;
 }
 .btn-primary {
   color: #fff;
@@ -144,6 +148,7 @@ export default AlertModalPopup;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 22px;
+max-width: 100px;
 }
 .line {
   display: block;
@@ -161,6 +166,7 @@ export default AlertModalPopup;
   background: #fff;
   padding: 6px 12px;
   font-size: 14px;
+  margin-top: 10px;
 }
 .input-label {
   font-weight: 600;
@@ -168,10 +174,32 @@ export default AlertModalPopup;
   margin-top: 6px;
   font-size: 14px;
 }
+.field-container{
+  margin-top:10px;
+}
+li{
+  margin-bottom:8px ;
+}
+.margin-left-5{
+  margin-left: 5px;
+}
+.no-bullet {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.import-participant{
+  max-width:250px
+}
 .dialog-content {
   text-align: left;
+font-size: 16px;
 }
 .dialog-content ul{
   padding-left: 15px;
+  margin-block: 0;
+}
+.dialog-content p{
+  margin: 0;
 }
 </style>

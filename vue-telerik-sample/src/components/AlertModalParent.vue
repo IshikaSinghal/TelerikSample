@@ -56,13 +56,14 @@ export default class AlertModalParent extends Vue {
     this.alertData = new PopupViewModel(
       "Import participants",
       `
-      <b><u>Click here</u></b> to <b>download</b> the Excel template.
+      <b><u style="cursor:pointer">Click here</u></b> to <b>download</b> the Excel template.
       <ul>
       <li>Open the file in <b>Excel</b>.</li>
       <li>Click on <b>'Enable editing'</b> button <b>if</b> the <b>editing is disabled.</b></li>
       <li><b>To assign multiple groups</b> to a participant, simply <b>add</b> the <b>group names separated by a semicolon (;)</b>.</li>
       <li><b>Do not alter</b> the <b>order of columns</b> in the template.</li>
       <li><b>Upload the file you just saved using the button below. You will be presented with a list of all the information we managed to extract from the file you uploaded.</b></li>
+      <li  class="no-bullet"> <Button @click="HandleCancel" class="btn btn-secondary import-participant">Import participant</Button></li>
       </ul>`,
       "Import",
       "Cancel"

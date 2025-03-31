@@ -1,7 +1,9 @@
 <template>
     <div>
-        <Datepicker :date="new Date(1739323800000)"  :fullDayTimeFormat="isFullDayTimeFormat" :dateOnly="false" :mindatetime="minDateTime" :maxdatetime="undefined"/>
-    </div>
+      <Datepicker :date="new Date(1739323800000)" :fullDayTimeFormat="isFullDayTimeFormat" :dateOnly="false"
+      :mindatetime="minDateTime" :maxdatetime="undefined" />
+    <Datepicker :date="new Date(1739323800000)" :fullDayTimeFormat="false" :dateOnly="true" :mindatetime="minDateTime"
+      :maxdatetime="undefined" />    </div>
 </template>
 <script lang="ts">
 import {Component, toNative, Vue} from 'vue-facing-decorator';
